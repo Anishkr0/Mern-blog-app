@@ -1,7 +1,7 @@
 import Post from '../models/post.model.js';
 import { errorHandler } from '../utils/error.js';
 
-export const create = async (req, res, next) => {
+export const create = async (req, res, next) => {//Checks if the user is an admin: Only admins are allowed to create posts
   if (!req.user.isAdmin) {
     return next(errorHandler(403, 'You are not allowed to create a post'));
   }
@@ -29,7 +29,7 @@ export const create = async (req, res, next) => {
 export const getposts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
-    const limit = parseInt(req.query.limit) || 9;
+    const limit = parseInt(req.query.limit) || 9;// Maximum number of posts 
     const sortDirection = req.query.order === 'asc' ? 1 : -1;
     const posts = await Post.find({
       ...(req.query.userId && { userId: req.query.userId }),
